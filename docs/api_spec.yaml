@@ -1,0 +1,141 @@
+openapi: 3.0.3
+info:
+  title: Distributed Sync System API
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      summary: Node health and Raft role
+      responses:
+        "200":
+          description: Health status
+  /state:
+    get:
+      summary: Full diagnostic state
+      responses:
+        "200":
+          description: Node state
+  /metrics:
+    get:
+      summary: Runtime metrics
+      responses:
+        "200":
+          description: Metrics snapshot
+  /locks/acquire:
+    post:
+      summary: Acquire shared or exclusive lock through Raft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [resource, owner]
+              properties:
+                resource:
+                  type: string
+                owner:
+                  type: string
+                mode:
+                  type: string
+                  enum: [shared, exclusive]
+      responses:
+        "200":
+          description: Command committed
+        "409":
+          description: Node is not leader or no majority
+  /locks/release:
+    post:
+      summary: Release lock through Raft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [resource, owner]
+              properties:
+                resource:
+                  type: string
+                owner:
+                  type: string
+      responses:
+        "200":
+          description: Command committed
+  /locks/deadlocks:
+    get:
+      summary: Detect distributed deadlock using wait-for graph
+      responses:
+        "200":
+          description: Deadlock report
+  /queue/{topic}/publish:
+    post:
+      summary: Publish message to distributed queue topic
+      parameters:
+        - name: topic
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Published message
+  /queue/{topic}/consume:
+    post:
+      summary: Consume one visible message
+      parameters:
+        - name: topic
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Message or null
+  /queue/ack/{message_id}:
+    post:
+      summary: Acknowledge consumed message
+      parameters:
+        - name: message_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Ack result
+  /cache/{key}:
+    get:
+      summary: Read cache key
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Cache lookup
+    post:
+      summary: Write cache key and propagate MESI update
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Write result
