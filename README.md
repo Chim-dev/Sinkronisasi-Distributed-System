@@ -62,3 +62,5 @@ Buka `http://localhost:8089`, lalu jalankan skenario queue, cache, dan lock.
 ## Video
 
 Link YouTube publik: `TODO: isi setelah video diunggah`
+
+Disclaimer: Video presentasi menggunakan avatar digital/AI hanya sebagai media bantu visual agar penyampaian materi lebih dinamis dan mudah diikuti. Penggunaan avatar tidak dimaksudkan untuk mengurangi rasa hormat, keseriusan, atau tanggung jawab akademik dalam presentasi ini. Seluruh isi teknis, demo sistem, penjelasan arsitektur, dan hasil analisis tetap disusun berdasarkan implementasi proyek ini.
