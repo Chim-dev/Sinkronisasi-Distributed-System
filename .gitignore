@@ -6,7 +6,6 @@ venv/
 data/
 *.log
 docs/locust_result*.csv
-docs/performance_analysis.md
 docs/report_template.md
 docs/video_demo_outline.md
 .env
